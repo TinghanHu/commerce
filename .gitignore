@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-arg.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.mo
+*.pot
+*.log
+local_settings.py # 如果您的敏感設定放在這裡，請加入
+
+# Django
+*.sqlite3 # 如果您使用 SQLite 資料庫，這是預設的資料庫檔案
+media/ # 用戶上傳的檔案通常放在這裡
+static_root/ # collectstatic 命令生成的靜態檔案通常放在這裡
+
+# Operating System Files
+.DS_Store # macOS
+Thumbs.db # Windows
+desktop.ini # Windows
+
+# IDE files
+.idea/ # PyCharm IDE 檔案
+.vscode/ # VS Code 檔案
+
+# Other common files you might want to ignore
+*.bak
+*.swp
+*.swo
