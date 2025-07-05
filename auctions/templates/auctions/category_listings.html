@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>類別: {{ category.name }} 的活躍拍賣清單</h2>
+
+    {% if listings %}
+        <div class="row">
+            {% for listing in listings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        {% if listing.image_url %}
+                            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.title }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="https://via.placeholder.com/200x200?text=No+Image" class="card-img-top" alt="No Image Available" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text">{{ listing.description|truncatechars:100 }}</p>
+                            <p class="card-text">
+                                {% with highest_bid=listing.bids.all|dictsort:"-amount"|first %}
+                                    <strong>當前價格:</strong>
+                                    {% if highest_bid %}
+                                        ${{ highest_bid.amount }}
+                                    {% else %}
+                                        ${{ listing.starting_bid }}
+                                    {% endif %}
+                                {% endwith %}
+                            </p>
+                            <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">查看拍賣</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            創建於: {{ listing.created_at|date:"Y-m-d H:i" }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>此類別目前沒有活躍的拍賣清單。</p>
+    {% endif %}
+{% endblock %}

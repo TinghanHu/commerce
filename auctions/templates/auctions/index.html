@@ -24,7 +24,7 @@
                             {#     <strong>Price:</strong> ${{ listing.starting_bid }} #}
                             {# {% endif %} #}
                         </p>
-                        <a href="#" class="btn btn-primary">查看拍賣</a> {# 這裡將來會指向單一拍賣清單頁面 #}
+                        <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">查看拍賣</a>
                     </div>
                     <div class="card-footer text-muted">
                         創建於: {{ listing.created_at|date:"Y-m-d H:i" }}

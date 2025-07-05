@@ -1,5 +1,5 @@
 from django import forms
-from .models import Listing, Category # 導入 Listing 和 Category 模型
+from .models import Listing, Category, Bid, Comment  # 導入 Listing 和 Category 模型
 
 # 用途：用於創建新的拍賣清單的表單
 class CreateListingForm(forms.ModelForm):
@@ -34,4 +34,28 @@ class CreateListingForm(forms.ModelForm):
         # 允許 category 欄位為空選項
         self.fields['category'].required = False
         self.fields['category'].empty_label = "選擇類別 (可選)"
-        
+
+# pricing form
+class BidForm(forms.ModelForm):
+    amount = forms.DecimalField(
+        label="您的出價",
+        min_value=0.01, # 出價至少為 0.01
+        decimal_places=2,
+        max_digits=10,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Bid
+        fields = ['amount'] # 只需要 amount 欄位，listing 和 bidder 會在視圖中設置
+
+# comment form
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        label="您的評論",
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+    )
+
+    class Meta:
+        model = Comment
+        fields = ['content'] # 只需要 content 欄位，listing 和 author 會在視圖中設置    
