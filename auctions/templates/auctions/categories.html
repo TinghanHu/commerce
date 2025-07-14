@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>所有拍賣類別</h2>
+    <h2>Categories</h2>
 
     {% if categories %}
         <ul class="list-group">
@@ -12,6 +12,6 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>目前沒有可用的類別。</p>
+        <p>No categories</p>
     {% endif %}
 {% endblock %}

@@ -3,9 +3,9 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    <div class="row"> {# 使用 Bootstrap 的網格系統來排版 #}
+    <div class="row"> {# Using Bootstrap's grid system for layout #}
         {% for listing in listings %}
-            <div class="col-md-4 mb-4"> {# 每行顯示 3 個拍賣清單 #}
+            <div class="col-md-4 mb-4"> {# Displays 3 listings per row #}
                 <div class="card">
                     {% if listing.image_url %}
                         <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.title }}" style="height: 200px; object-fit: cover;">
@@ -14,29 +14,29 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ listing.title }}</h5>
-                        <p class="card-text">{{ listing.description|truncatechars:100 }}</p> {# 描述截斷到 100 字元 #}
+                        <p class="card-text">{{ listing.description|truncatechars:100 }}</p> {# Description truncated to 100 characters #}
                         <p class="card-text">
                             <strong>Start price:</strong> ${{ listing.starting_bid }}
-                            {# 這裡可以考慮顯示當前最高出價，但我們還沒有實現出價功能 #}
+                            {# You might consider displaying the current highest bid here, but we haven't implemented bidding functionality yet #}
                             {# {% if listing.bids.all %} #}
-                            {#     <strong>Price:</strong> ${{ listing.bids.order_by('-amount').first.amount }} #}
+                            {#     <strong>Current Price:</strong> ${{ listing.bids.order_by('-amount').first.amount }} #}
                             {# {% else %} #}
-                            {#     <strong>Price:</strong> ${{ listing.starting_bid }} #}
+                            {#     <strong>Current Price:</strong> ${{ listing.starting_bid }} #}
                             {# {% endif %} #}
                         </p>
-                        <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">查看拍賣</a>
+                        <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">View Auction</a>
                     </div>
                     <div class="card-footer text-muted">
-                        創建於: {{ listing.created_at|date:"Y-m-d H:i" }}
+                        Created: {{ listing.created_at|date:"Y-m-d H:i" }}
                         {% if listing.category %}
-                            <br>category: {{ listing.category.name }}
+                            <br>Category: {{ listing.category.name }}
                         {% endif %}
                     </div>
                 </div>
             </div>
-            {% empty %} {# 如果沒有活躍拍賣清單 #}
+            {% empty %} {# If there are no active listings #}
             <div class="col-12">
-                <p>There is no list.</p>
+                <p>There are no active listings.</p>
             </div>
         {% endfor %}
     </div>

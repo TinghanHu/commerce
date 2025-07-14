@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>我的觀察清單</h2>
+    <h2>My lists</h2>
 
     {% if listings %}
         <div class="row">
@@ -17,9 +17,9 @@
                             <h5 class="card-title">{{ listing.title }}</h5>
                             <p class="card-text">{{ listing.description|truncatechars:100 }}</p>
                             <p class="card-text">
-                                {# 獲取當前最高出價 #}
+                                {# the hightest price #}
                                 {% with highest_bid=listing.bids.all|dictsort:"-amount"|first %}
-                                    <strong>當前價格:</strong>
+                                    <strong>current price:</strong>
                                     {% if highest_bid %}
                                         ${{ highest_bid.amount }}
                                     {% else %}
@@ -30,9 +30,9 @@
                             <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">查看拍賣</a>
                         </div>
                         <div class="card-footer text-muted">
-                            創建於: {{ listing.created_at|date:"Y-m-d H:i" }}
+                            created_at: {{ listing.created_at|date:"Y-m-d H:i" }}
                             {% if listing.category %}
-                                <br>類別: {{ listing.category.name }}
+                                <br>categories: {{ listing.category.name }}
                             {% endif %}
                         </div>
                     </div>
@@ -40,6 +40,6 @@
             {% endfor %}
         </div>
     {% else %}
-        <p>您的觀察清單中沒有任何物品。</p>
+        <p>Your list is empty.</p>
     {% endif %}
 {% endblock %}

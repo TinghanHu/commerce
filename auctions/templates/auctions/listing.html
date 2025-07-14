@@ -17,58 +17,58 @@
                 <img src="https://via.placeholder.com/400x300?text=No+Image" class="img-fluid" alt="No Image Available" style="max-height: 400px; object-fit: contain;">
             {% endif %}
 
-            <p class="mt-3"><strong>描述:</strong> {{ listing.description }}</p>
-            <p><strong>賣家:</strong> {{ listing.owner.username }}</p>
+            <p class="mt-3"><strong>Description:</strong> {{ listing.description }}</p>
+            <p><strong>Seller:</strong> {{ listing.owner.username }}</p>
             {% if listing.category %}
-                <p><strong>類別:</strong> {{ listing.category.name }}</p>
+                <p><strong>Category:</strong> {{ listing.category.name }}</p>
             {% endif %}
-            <p><strong>起始價格:</strong> ${{ listing.starting_bid }}</p>
+            <p><strong>Starting Bid:</strong> ${{ listing.starting_bid }}</p>
             <p>
-                <strong>當前價格:</strong>
+                <strong>Current Price:</strong>
                 {% if highest_bid %}
                     <span class="text-success">${{ highest_bid }}</span>
                 {% else %}
-                    <span class="text-info">${{ listing.starting_bid }}</span> (無出價)
+                    <span class="text-info">${{ listing.starting_bid }}</span> (No bids yet)
                 {% endif %}
             </p>
 
             {% if not listing.is_active %}
                 <div class="alert alert-danger" role="alert">
-                    拍賣已結束！
+                    Auction has ended!
                     {% if highest_bid %}
-                        中標者: <strong>{{ listing.bids.filter(amount=highest_bid).first.bidder.username }}</strong>
+                        Winner: <strong>{{ listing.bids.filter(amount=highest_bid).first.bidder.username }}</strong>
                     {% else %}
-                        無中標者 (無出價)
+                        No winner (No bids placed)
                     {% endif %}
                 </div>
                 {% if user.is_authenticated and is_winner %}
                     <div class="alert alert-success" role="alert">
-                        恭喜！您贏得了此拍賣！
+                        Congratulations! You won this auction!
                     </div>
                 {% endif %}
             {% endif %}
 
             {% if user.is_authenticated %}
                 <hr>
-                <h4>管理拍賣</h4>
+                <h4>Manage Auction</h4>
                 {% if user == listing.owner and listing.is_active %}
                     <form action="{% url 'close_auction' listing.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">關閉拍賣</button>
+                        <button type="submit" class="btn btn-danger">Close Auction</button>
                     </form>
                 {% endif %}
 
                 <hr>
-                <h4>觀察清單</h4>
+                <h4>Watchlist</h4>
                 {% if is_on_watchlist %}
                     <form action="{% url 'remove_from_watchlist' listing.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-warning">從觀察清單移除</button>
+                        <button type="submit" class="btn btn-warning">Remove from Watchlist</button>
                     </form>
                 {% else %}
                     <form action="{% url 'add_to_watchlist' listing.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-info">添加到觀察清單</button>
+                        <button type="submit" class="btn btn-info">Add to Watchlist</button>
                     </form>
                 {% endif %}
             {% endif %}
@@ -78,64 +78,64 @@
             {% if user.is_authenticated and listing.is_active %}
                 <div class="card mb-4">
                     <div class="card-header">
-                        出價
+                        Place a Bid
                     </div>
                     <div class="card-body">
                         <form action="{% url 'place_bid' listing.id %}" method="post">
                             {% csrf_token %}
                             {{ bid_form.as_p }}
-                            <button type="submit" class="btn btn-success">出價</button>
+                            <button type="submit" class="btn btn-success">Submit Bid</button>
                         </form>
                     </div>
                 </div>
             {% elif not listing.is_active %}
                 <div class="card mb-4">
                     <div class="card-header">
-                        拍賣已結束
+                        Auction Ended
                     </div>
                     <div class="card-body">
-                        <p>無法再對此拍賣出價。</p>
+                        <p>No more bids can be placed on this auction.</p>
                     </div>
                 </div>
             {% else %}
                 <div class="card mb-4">
                     <div class="card-header">
-                        出價
+                        Place a Bid
                     </div>
                     <div class="card-body">
-                        <p>請先 <a href="{% url 'login' %}">登入</a> 才能出價。</p>
+                        <p>Please <a href="{% url 'login' %}">log in</a> to place a bid.</p>
                     </div>
                 </div>
             {% endif %}
 
             <div class="card">
                 <div class="card-header">
-                    評論
+                    Comments
                 </div>
                 <div class="card-body">
                     {% if user.is_authenticated %}
                         <form action="{% url 'add_comment' listing.id %}" method="post">
                             {% csrf_token %}
                             {{ comment_form.as_p }}
-                            <button type="submit" class="btn btn-primary">發布評論</button>
+                            <button type="submit" class="btn btn-primary">Post Comment</button>
                         </form>
                     {% else %}
-                        <p>請先 <a href="{% url 'login' %}">登入</a> 才能發表評論。</p>
+                        <p>Please <a href="{% url 'login' %}">log in</a> to post a comment.</p>
                     {% endif %}
 
                     <hr>
-                    <h5>所有評論:</h5>
+                    <h5>All Comments:</h5>
                     {% if comments %}
                         <ul class="list-group">
                             {% for comment in comments %}
                                 <li class="list-group-item">
-                                    <strong>{{ comment.author.username }}</strong> 於 {{ comment.timestamp|date:"Y-m-d H:i" }} 說:
+                                    <strong>{{ comment.author.username }}</strong> on {{ comment.timestamp|date:"Y-m-d H:i" }} said:
                                     <p>{{ comment.content }}</p>
                                 </li>
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p>此拍賣目前沒有評論。</p>
+                        <p>No comments for this listing yet.</p>
                     {% endif %}
                 </div>
             </div>

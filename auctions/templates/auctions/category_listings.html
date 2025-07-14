@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>類別: {{ category.name }} 的活躍拍賣清單</h2>
+    <h2>Category: {{ category.name }}'s Active Listings</h2>
 
     {% if listings %}
         <div class="row">
@@ -18,7 +18,7 @@
                             <p class="card-text">{{ listing.description|truncatechars:100 }}</p>
                             <p class="card-text">
                                 {% with highest_bid=listing.bids.all|dictsort:"-amount"|first %}
-                                    <strong>當前價格:</strong>
+                                    <strong>Current Price:</strong>
                                     {% if highest_bid %}
                                         ${{ highest_bid.amount }}
                                     {% else %}
@@ -26,16 +26,16 @@
                                     {% endif %}
                                 {% endwith %}
                             </p>
-                            <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">查看拍賣</a>
+                            <a href="{% url 'listing_page' listing.id %}" class="btn btn-primary">View Auction</a>
                         </div>
                         <div class="card-footer text-muted">
-                            創建於: {{ listing.created_at|date:"Y-m-d H:i" }}
+                            Created: {{ listing.created_at|date:"Y-m-d H:i" }}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>此類別目前沒有活躍的拍賣清單。</p>
+        <p>There are no active listings in this category.</p>
     {% endif %}
 {% endblock %}

@@ -19,11 +19,11 @@ class CreateListingForm(forms.ModelForm):
         }
         # labels 可以自定義欄位在表單中顯示的標籤
         labels = {
-            'title': '拍賣標題',
-            'description': '物品描述',
-            'starting_bid': '起始價格',
-            'image_url': '圖片網址',
-            'category': '類別',
+            'title': 'Auction Title',
+            'description': 'Item Description',
+            'starting_bid': 'Starting Bid',
+            'image_url': 'Image URL',
+            'category': 'Category',
         }
 
     # 為了讓 category 欄位顯示 Category 物件的名稱，我們需要自定義 queryset
@@ -33,12 +33,12 @@ class CreateListingForm(forms.ModelForm):
         self.fields['category'].queryset = Category.objects.all().order_by('name')
         # 允許 category 欄位為空選項
         self.fields['category'].required = False
-        self.fields['category'].empty_label = "選擇類別 (可選)"
+        self.fields['category'].empty_label = "Select Category (Optional)"
 
 # pricing form
 class BidForm(forms.ModelForm):
     amount = forms.DecimalField(
-        label="您的出價",
+        label="Your Bid",
         min_value=0.01, # 出價至少為 0.01
         decimal_places=2,
         max_digits=10,
@@ -52,7 +52,7 @@ class BidForm(forms.ModelForm):
 # comment form
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
-        label="您的評論",
+        label="Your Comment",
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
     )
 
